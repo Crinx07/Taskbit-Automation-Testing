@@ -1,0 +1,52 @@
+import { test, expect } from "@playwright/test";
+import { LoginPage } from "../../pages/LoginPage.js";
+
+test.beforeEach(async ({ page }) => {
+  await page.goto("https://taskbit.online");
+});
+
+test("TC-LOGIN-001: Successful Login", async ({ page }) => {
+  const loginPage = new LoginPage(page);
+
+  await loginPage.login(
+    process.env.TASKBIT_EMAIL,
+    process.env.TASKBIT_PASSWORD,
+  );
+
+  await expect(page).toHaveURL(/dashboard/);
+});
+
+test("TC-LOGIN-002: Successful Logout", async ({ page }) => {
+  const loginPage = new LoginPage(page);
+
+  await loginPage.login(
+    process.env.TASKBIT_EMAIL,
+    process.env.TASKBIT_PASSWORD,
+  );
+
+  await expect(page).toHaveURL(/dashboard/);
+
+  await page
+    .locator("button.btn--ghost")
+    .filter({
+      has: page.locator("span.u-visually-hide-below-900"),
+    })
+    .click();
+
+  await page.getByRole("menuitem", { name: "Log out" }).click();
+
+  await expect(page).toHaveURL("https://taskbit.online");
+});
+
+test("TC-LOGIN-003: Account Deactivation Login", async ({ page }) => {
+  const loginPage = new LoginPage(page);
+
+  await loginPage.login(
+    process.env.TASKBIT_PERSONAL_EMAIL,
+    process.env.TASKBIT_PERSONAL_PASSWORD,
+  );
+
+  await expect(page.locator("#login-error")).toHaveText(
+    "Your account is deactivated. Contact the CCIT admin.",
+  );
+});
