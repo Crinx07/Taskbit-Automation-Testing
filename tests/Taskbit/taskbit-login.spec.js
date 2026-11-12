@@ -15,24 +15,17 @@ test("TC-LOGIN-001: Successful Login", async ({ loginPage, page }) => {
   await expect(page).toHaveURL(/dashboard/);
 });
 
-test("TC-LOGIN-002: Successful Logout", async ({ loginPage, page }) => {
-  await loginPage.login(
-    process.env.TASKBIT_EMAIL,
-    process.env.TASKBIT_PASSWORD,
-  );
-
-  await expect(page).toHaveURL(/dashboard/);
-
-  await page
+test("TC-LOGIN-002: Successful Logout", async ({ authenticatedPage }) => {
+  await authenticatedPage
     .locator("button.btn--ghost")
     .filter({
-      has: page.locator("span.u-visually-hide-below-900"),
+      has: authenticatedPage.locator("span.u-visually-hide-below-900"),
     })
     .click();
 
-  await page.getByRole("menuitem", { name: "Log out" }).click();
+  await authenticatedPage.getByRole("menuitem", { name: "Log out" }).click();
 
-  await expect(page).toHaveURL("https://taskbit.online");
+  await expect(authenticatedPage).toHaveURL("https://taskbit.online");
 });
 
 test("TC-LOGIN-003: Account Deactivation Login", async ({
