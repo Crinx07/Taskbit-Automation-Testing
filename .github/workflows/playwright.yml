@@ -9,7 +9,7 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
 
-    env: # ADD IT HERE
+    env:
       TASKBIT_EMAIL: ${{ secrets.TASKBIT_EMAIL }}
       TASKBIT_PASSWORD: ${{ secrets.TASKBIT_PASSWORD }}
       TASKBIT_PERSONAL_EMAIL: ${{ secrets.TASKBIT_PERSONAL_EMAIL }}
@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4.2.0
         with:
           node-version: lts/*
       - name: Install dependencies
