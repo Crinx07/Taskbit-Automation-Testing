@@ -1,5 +1,4 @@
-import { test, expect } from "@playwright/test";
-import { LoginPage } from "../../pages/LoginPage.js";
+import { test, expect } from "../../fixtures/test.js";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("https://taskbit.online", {
@@ -7,9 +6,7 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-test("TC-LOGIN-001: Successful Login", async ({ page }) => {
-  const loginPage = new LoginPage(page);
-
+test("TC-LOGIN-001: Successful Login", async ({ loginPage, page }) => {
   await loginPage.login(
     process.env.TASKBIT_EMAIL,
     process.env.TASKBIT_PASSWORD,
@@ -18,9 +15,7 @@ test("TC-LOGIN-001: Successful Login", async ({ page }) => {
   await expect(page).toHaveURL(/dashboard/);
 });
 
-test("TC-LOGIN-002: Successful Logout", async ({ page }) => {
-  const loginPage = new LoginPage(page);
-
+test("TC-LOGIN-002: Successful Logout", async ({ loginPage, page }) => {
   await loginPage.login(
     process.env.TASKBIT_EMAIL,
     process.env.TASKBIT_PASSWORD,
@@ -40,9 +35,10 @@ test("TC-LOGIN-002: Successful Logout", async ({ page }) => {
   await expect(page).toHaveURL("https://taskbit.online");
 });
 
-test("TC-LOGIN-003: Account Deactivation Login", async ({ page }) => {
-  const loginPage = new LoginPage(page);
-
+test("TC-LOGIN-003: Account Deactivation Login", async ({
+  loginPage,
+  page,
+}) => {
   await loginPage.login(
     process.env.TASKBIT_PERSONAL_EMAIL,
     process.env.TASKBIT_PERSONAL_PASSWORD,

@@ -1,13 +1,10 @@
-import { test, expect } from "@playwright/test";
-import { RegisterPage } from "../../pages/RegisterPage.js";
+import { test, expect } from "../../fixtures/test.js";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("https://taskbit.online/register");
 });
 
-test("TC-REG-001: Successful Registration", async ({ page }) => {
-  const registerPage = new RegisterPage(page);
-
+test("TC-REG-001: Successful Registration", async ({ registerPage, page }) => {
   const uniqueIDNumber = String(Date.now()).slice(-10);
   const uniqueEmail = `qa-${Date.now()}@example.com`;
 
@@ -23,9 +20,10 @@ test("TC-REG-001: Successful Registration", async ({ page }) => {
   ).toBeVisible();
 });
 
-test("TC-REG-002: Duplicate Email Validation", async ({ page }) => {
-  const registerPage = new RegisterPage(page);
-
+test("TC-REG-002: Duplicate Email Validation", async ({
+  registerPage,
+  page,
+}) => {
   await registerPage.register(
     "Cristiano Maldia",
     "2023012451",
@@ -38,9 +36,10 @@ test("TC-REG-002: Duplicate Email Validation", async ({ page }) => {
   );
 });
 
-test("TC-REG-003: Duplicate ID Number Validation", async ({ page }) => {
-  const registerPage = new RegisterPage(page);
-
+test("TC-REG-003: Duplicate ID Number Validation", async ({
+  registerPage,
+  page,
+}) => {
   await registerPage.register(
     "Cristiano Maldia",
     "2023012451",
